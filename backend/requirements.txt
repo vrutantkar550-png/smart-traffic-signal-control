@@ -25,35 +25,5 @@ pytest==8.2.0
 pytest-asyncio==0.23.6
 httpx==0.27.0                   # Async test client for FastAPI
 
-# ML training dependencies
-# Install with: pip install -r ml/requirements.txt
-
-# ── Core ML ──────────────────────────────────────────────────────────────────
-torch==2.3.0
-torchvision==0.18.0
-
-# ── Reinforcement Learning ────────────────────────────────────────────────────
-stable-baselines3==2.3.0        # PPO, SAC, TD3 algorithms
-gymnasium==0.29.1               # OpenAI Gym — environment API
-shimmy==1.3.0                   # gym/gymnasium compatibility shim
-
-# ── Computer Vision / YOLO ────────────────────────────────────────────────────
-ultralytics==8.2.0              # YOLOv8 training + inference
-opencv-python==4.9.0.80         # Camera frame capture
-Pillow==10.3.0
-
-# ── Data / Numerical ─────────────────────────────────────────────────────────
-numpy==1.26.4
-pandas==2.2.2
-
-# ── Visualisation ─────────────────────────────────────────────────────────────
-matplotlib==3.8.4
-seaborn==0.13.2
-
-# ── HTTP (for pushing counts to backend) ─────────────────────────────────────
-httpx==0.27.0
-
-# ── Logging / Progress ────────────────────────────────────────────────────────
-tensorboard==2.16.2             # Training curve visualisation
 tqdm==4.66.4
 
