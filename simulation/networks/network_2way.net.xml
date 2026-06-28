@@ -1,0 +1,48 @@
+<!--
+simulation/networks/network_2way.net.xml
+
+SUMO road network for a 2-lane linear (2-way) intersection.
+Two roads cross: North-South straight road.
+
+Structure:
+  N ──── junction ──── S
+         (centre)
+
+Nodes:   north, south, centre
+Edges:   N→centre, S→centre, centre→N, centre→S
+-->
+<net version="1.16" junctionCornerDetail="5" limitTurnSpeed="5.83">
+
+  <!-- ── Nodes (intersections / endpoints) ── -->
+  <node id="north"  x="0.00"   y="200.00"  type="priority"/>
+  <node id="south"  x="0.00"   y="-200.00" type="priority"/>
+  <node id="centre" x="0.00"   y="0.00"    type="traffic_light"/>
+
+  <!-- ── Edges (road segments) ── -->
+  <!-- Incoming: vehicles heading toward the junction -->
+  <edge id="N_in"  from="north"  to="centre" numLanes="2" speed="13.89" priority="1"/>
+  <edge id="S_in"  from="south"  to="centre" numLanes="2" speed="13.89" priority="1"/>
+
+  <!-- Outgoing: vehicles leaving the junction -->
+  <edge id="N_out" from="centre" to="north"  numLanes="2" speed="13.89" priority="1"/>
+  <edge id="S_out" from="centre" to="south"  numLanes="2" speed="13.89" priority="1"/>
+
+  <!-- ── Traffic light program ── -->
+  <tlLogic id="centre" type="static" programID="0" offset="0">
+    <!-- Phase 0: N/S green — 30s -->
+    <phase duration="30" state="GGrr"/>
+    <!-- Phase 1: N/S yellow — 3s -->
+    <phase duration="3"  state="yyrr"/>
+    <!-- Phase 2: N/S red, S/N green — 30s -->
+    <phase duration="30" state="rrGG"/>
+    <!-- Phase 3: yellow — 3s -->
+    <phase duration="3"  state="rryy"/>
+  </tlLogic>
+
+  <!-- ── Connections (lane-level routing) ── -->
+  <connection from="N_in"  to="N_out" fromLane="0" toLane="0"/>
+  <connection from="N_in"  to="S_out" fromLane="1" toLane="0"/>
+  <connection from="S_in"  to="S_out" fromLane="0" toLane="0"/>
+  <connection from="S_in"  to="N_out" fromLane="1" toLane="0"/>
+
+</net>
