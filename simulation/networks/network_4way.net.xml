@@ -1,0 +1,78 @@
+<!--
+simulation/networks/network_4way.net.xml
+
+SUMO road network for a standard 4-way crossroads.
+
+Structure:
+        N
+        |
+W ──── junction ──── E
+        |
+        S
+
+Nodes:   north, south, east, west, centre
+Edges:   N, S, E, W in/out to centre (8 edges total)
+-->
+<net version="1.16" junctionCornerDetail="5" limitTurnSpeed="5.83">
+
+  <!-- ── Nodes ── -->
+  <node id="north"  x="0.00"    y="300.00"  type="priority"/>
+  <node id="south"  x="0.00"    y="-300.00" type="priority"/>
+  <node id="east"   x="300.00"  y="0.00"    type="priority"/>
+  <node id="west"   x="-300.00" y="0.00"    type="priority"/>
+  <node id="centre" x="0.00"    y="0.00"    type="traffic_light"/>
+
+  <!-- ── Edges (incoming to junction) ── -->
+  <edge id="N_in"  from="north"  to="centre" numLanes="2" speed="13.89" priority="2"/>
+  <edge id="S_in"  from="south"  to="centre" numLanes="2" speed="13.89" priority="2"/>
+  <edge id="E_in"  from="east"   to="centre" numLanes="2" speed="13.89" priority="2"/>
+  <edge id="W_in"  from="west"   to="centre" numLanes="2" speed="13.89" priority="2"/>
+
+  <!-- ── Edges (outgoing from junction) ── -->
+  <edge id="N_out" from="centre" to="north"  numLanes="2" speed="13.89" priority="2"/>
+  <edge id="S_out" from="centre" to="south"  numLanes="2" speed="13.89" priority="2"/>
+  <edge id="E_out" from="centre" to="east"   numLanes="2" speed="13.89" priority="2"/>
+  <edge id="W_out" from="centre" to="west"   numLanes="2" speed="13.89" priority="2"/>
+
+  <!--
+    Traffic light state string legend (8 signals — one per incoming lane per arm):
+      Position: N0 N1 S0 S1 E0 E1 W0 W1
+      G = green, y = yellow, r = red
+  -->
+  <tlLogic id="centre" type="static" programID="0" offset="0">
+    <!-- Phase 0: N/S green — 30s -->
+    <phase duration="30" state="GGGGrrrr"/>
+    <!-- Phase 1: N/S yellow — 3s -->
+    <phase duration="3"  state="yyyyrrrr"/>
+    <!-- Phase 2: all red safety gap — 2s -->
+    <phase duration="2"  state="rrrrrrrr"/>
+    <!-- Phase 3: E/W green — 30s -->
+    <phase duration="30" state="rrrrGGGG"/>
+    <!-- Phase 4: E/W yellow — 3s -->
+    <phase duration="3"  state="rrrryyyy"/>
+    <!-- Phase 5: all red safety gap — 2s -->
+    <phase duration="2"  state="rrrrrrrr"/>
+  </tlLogic>
+
+  <!-- ── Lane connections ── -->
+  <!-- North arm: lane 0 = straight/right, lane 1 = left turn -->
+  <connection from="N_in" to="S_out" fromLane="0" toLane="0" tl="centre" linkIndex="0"/>
+  <connection from="N_in" to="W_out" fromLane="0" toLane="0" tl="centre" linkIndex="1"/>
+  <connection from="N_in" to="E_out" fromLane="1" toLane="0" tl="centre" linkIndex="1"/>
+
+  <!-- South arm -->
+  <connection from="S_in" to="N_out" fromLane="0" toLane="0" tl="centre" linkIndex="2"/>
+  <connection from="S_in" to="E_out" fromLane="0" toLane="0" tl="centre" linkIndex="3"/>
+  <connection from="S_in" to="W_out" fromLane="1" toLane="0" tl="centre" linkIndex="3"/>
+
+  <!-- East arm -->
+  <connection from="E_in" to="W_out" fromLane="0" toLane="0" tl="centre" linkIndex="4"/>
+  <connection from="E_in" to="N_out" fromLane="0" toLane="0" tl="centre" linkIndex="5"/>
+  <connection from="E_in" to="S_out" fromLane="1" toLane="0" tl="centre" linkIndex="5"/>
+
+  <!-- West arm -->
+  <connection from="W_in" to="E_out" fromLane="0" toLane="0" tl="centre" linkIndex="6"/>
+  <connection from="W_in" to="S_out" fromLane="0" toLane="0" tl="centre" linkIndex="7"/>
+  <connection from="W_in" to="N_out" fromLane="1" toLane="0" tl="centre" linkIndex="7"/>
+
+</net>
