@@ -1,6 +1,3 @@
-<!--
-simulation/configs/sim_2way_medium.sumocfg
--->
 <configuration>
   <input>
     <net-file     value="../networks/network_2way.net.xml"/>
