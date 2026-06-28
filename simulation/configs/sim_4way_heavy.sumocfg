@@ -1,0 +1,16 @@
+<!--
+simulation/configs/sim_4way_heavy.sumocfg
+-->
+<configuration>
+  <input>
+    <net-file     value="../networks/network_4way.net.xml"/>
+    <route-files  value="../scenarios/traffic_demand.rou.xml"/>
+  </input>
+  <time><begin value="0"/><end value="3600"/><step-length value="1.0"/></time>
+  <output>
+    <tripinfo-output value="../outputs/logs/4way_heavy_trips.xml"/>
+    <queue-output    value="../outputs/logs/4way_heavy_queues.xml"/>
+    <summary-output  value="../outputs/logs/4way_heavy_summary.xml"/>
+  </output>
+  <report><verbose value="false"/><no-step-log value="true"/></report>
+</configuration>
