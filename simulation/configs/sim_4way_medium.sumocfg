@@ -1,0 +1,27 @@
+<!--
+simulation/configs/sim_4way_medium.sumocfg
+SUMO config for 4-way junction, medium traffic, 1 hour simulation.
+Run: sumo -c simulation/configs/sim_4way_medium.sumocfg
+-->
+<configuration>
+  <input>
+    <net-file       value="../networks/network_4way.net.xml"/>
+    <route-files    value="../scenarios/traffic_demand.rou.xml"/>
+  </input>
+  <time>
+    <begin  value="0"/>
+    <end    value="3600"/>
+    <step-length value="1.0"/>
+  </time>
+  <output>
+    <tripinfo-output        value="../outputs/logs/4way_medium_trips.xml"/>
+    <queue-output           value="../outputs/logs/4way_medium_queues.xml"/>
+    <tl-switchtimes-output  value="../outputs/logs/4way_medium_tls.xml"/>
+    <summary-output         value="../outputs/logs/4way_medium_summary.xml"/>
+    <statistic-output       value="../outputs/logs/4way_medium_stats.xml"/>
+  </output>
+  <report>
+    <verbose value="false"/>
+    <no-step-log value="true"/>
+  </report>
+</configuration>
