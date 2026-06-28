@@ -1,0 +1,139 @@
+<!--
+simulation/scenarios/traffic_demand.rou.xml
+
+Vehicle spawn routes for all traffic scenarios.
+Used by all three junction types — edge IDs match the network files.
+
+Traffic levels:
+  light    →  ~300 vehicles/hour total
+  medium   →  ~800 vehicles/hour total
+  heavy    → ~1500 vehicles/hour total
+  peak     → ~2000 vehicles/hour (rush hour simulation)
+  emergency→  medium traffic + emergency vehicle injected at t=180s
+
+Vehicle types:
+  car            — standard passenger car (most common)
+  truck          — slower, longer
+  motorcycle     — faster, smaller
+  emergency_veh  — ambulance (highest priority, fastest)
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+  <!-- ── Vehicle type definitions ─────────────────────────────────────────── -->
+
+  <vType id="car"
+         accel="2.6"  decel="4.5"  sigma="0.5"
+         length="4.5" maxSpeed="13.89"
+         color="0.8,0.8,0.8"
+         vClass="passenger"/>
+
+  <vType id="truck"
+         accel="1.3"  decel="4.0"  sigma="0.5"
+         length="12.0" maxSpeed="11.11"
+         color="0.6,0.4,0.2"
+         vClass="truck"/>
+
+  <vType id="motorcycle"
+         accel="3.5"  decel="5.0"  sigma="0.4"
+         length="2.2" maxSpeed="16.67"
+         color="0.3,0.3,0.9"
+         vClass="motorcycle"/>
+
+  <vType id="auto_rickshaw"
+         accel="2.0"  decel="4.0"  sigma="0.6"
+         length="3.0" maxSpeed="11.11"
+         color="0.9,0.7,0.1"
+         vClass="passenger"/>
+
+  <vType id="emergency_veh"
+         accel="4.0"  decel="6.0"  sigma="0.0"
+         length="6.0" maxSpeed="22.22"
+         color="1.0,0.0,0.0"
+         vClass="emergency"
+         guiShape="emergency"/>
+
+  <!-- ── Route definitions ────────────────────────────────────────────────── -->
+  <!-- 4-way routes (N, S, E, W to all destinations) -->
+  <route id="N_to_S"  edges="N_in S_out"/>
+  <route id="N_to_E"  edges="N_in E_out"/>
+  <route id="N_to_W"  edges="N_in W_out"/>
+
+  <route id="S_to_N"  edges="S_in N_out"/>
+  <route id="S_to_E"  edges="S_in E_out"/>
+  <route id="S_to_W"  edges="S_in W_out"/>
+
+  <route id="E_to_W"  edges="E_in W_out"/>
+  <route id="E_to_N"  edges="E_in N_out"/>
+  <route id="E_to_S"  edges="E_in S_out"/>
+
+  <route id="W_to_E"  edges="W_in E_out"/>
+  <route id="W_to_N"  edges="W_in N_out"/>
+  <route id="W_to_S"  edges="W_in S_out"/>
+
+  <!-- 2-way routes -->
+  <route id="N2_to_S" edges="N_in S_out"/>
+  <route id="S2_to_N" edges="S_in N_out"/>
+
+  <!-- 3-way routes -->
+  <route id="N3_to_S" edges="N_in S_out"/>
+  <route id="N3_to_W" edges="N_in W_out"/>
+  <route id="S3_to_N" edges="S_in N_out"/>
+  <route id="S3_to_W" edges="S_in W_out"/>
+  <route id="W3_to_N" edges="W_in N_out"/>
+  <route id="W3_to_S" edges="W_in S_out"/>
+
+  <!-- Emergency vehicle route: enters from North, exits South -->
+  <route id="emrg_N_to_S" edges="N_in S_out"/>
+
+  <!-- ── LIGHT traffic flow (300 veh/hr, depart period ~12s avg) ─────────── -->
+  <flow id="light_N_S"  route="N_to_S"  type="car"          begin="0"   end="3600" period="15"  number="240"/>
+  <flow id="light_S_N"  route="S_to_N"  type="car"          begin="0"   end="3600" period="15"  number="240"/>
+  <flow id="light_E_W"  route="E_to_W"  type="car"          begin="0"   end="3600" period="18"  number="200"/>
+  <flow id="light_W_E"  route="W_to_E"  type="car"          begin="0"   end="3600" period="18"  number="200"/>
+  <flow id="light_moto" route="N_to_E"  type="motorcycle"   begin="0"   end="3600" period="30"  number="120"/>
+  <flow id="light_truck" route="S_to_E"  type="truck"        begin="0"   end="3600" period="60"  number="60" />
+
+  <!-- ── MEDIUM traffic flow (800 veh/hr, period ~4.5s avg) ──────────────── -->
+  <flow id="med_N_S"    route="N_to_S"  type="car"          begin="0"   end="3600" period="5"   number="720"/>
+  <flow id="med_S_N"    route="S_to_N"  type="car"          begin="0"   end="3600" period="5"   number="720"/>
+  <flow id="med_E_W"    route="E_to_W"  type="car"          begin="0"   end="3600" period="6"   number="600"/>
+  <flow id="med_W_E"    route="W_to_E"  type="car"          begin="0"   end="3600" period="6"   number="600"/>
+  <flow id="med_N_E"    route="N_to_E"  type="car"          begin="0"   end="3600" period="10"  number="360"/>
+  <flow id="med_rick"   route="S_to_W"  type="auto_rickshaw"begin="0"   end="3600" period="8"   number="450"/>
+  <flow id="med_moto"   route="E_to_N"  type="motorcycle"   begin="0"   end="3600" period="10"  number="360"/>
+  <flow id="med_truck"  route="W_to_S"  type="truck"        begin="0"   end="3600" period="30"  number="120"/>
+
+  <!-- ── HEAVY traffic flow (1500 veh/hr, period ~2.4s avg) ─────────────── -->
+  <flow id="hvy_N_S"    route="N_to_S"  type="car"          begin="0"   end="3600" period="2"   number="1800"/>
+  <flow id="hvy_S_N"    route="S_to_N"  type="car"          begin="0"   end="3600" period="2"   number="1800"/>
+  <flow id="hvy_E_W"    route="E_to_W"  type="car"          begin="0"   end="3600" period="3"   number="1200"/>
+  <flow id="hvy_W_E"    route="W_to_E"  type="car"          begin="0"   end="3600" period="3"   number="1200"/>
+  <flow id="hvy_N_E"    route="N_to_E"  type="car"          begin="0"   end="3600" period="4"   number="900" />
+  <flow id="hvy_S_W"    route="S_to_W"  type="car"          begin="0"   end="3600" period="4"   number="900" />
+  <flow id="hvy_rick"   route="E_to_S"  type="auto_rickshaw"begin="0"   end="3600" period="5"   number="720" />
+  <flow id="hvy_moto"   route="W_to_N"  type="motorcycle"   begin="0"   end="3600" period="4"   number="900" />
+  <flow id="hvy_truck"  route="N_to_W"  type="truck"        begin="0"   end="3600" period="15"  number="240" />
+
+  <!-- ── PEAK hour burst (2000 veh/hr, t=900-1800s = 15-30 min) ─────────── -->
+  <flow id="peak_N_S"   route="N_to_S"  type="car"          begin="900" end="1800" period="1"   number="900"/>
+  <flow id="peak_S_N"   route="S_to_N"  type="car"          begin="900" end="1800" period="1"   number="900"/>
+  <flow id="peak_E_W"   route="E_to_W"  type="car"          begin="900" end="1800" period="2"   number="450"/>
+  <flow id="peak_W_E"   route="W_to_E"  type="car"          begin="900" end="1800" period="2"   number="450"/>
+  <flow id="peak_moto"  route="N_to_E"  type="motorcycle"   begin="900" end="1800" period="3"   number="300"/>
+
+  <!-- ── EMERGENCY vehicle injections (used in emergency scenario) ─────────
+       Ambulance enters from North at t=180s during medium traffic.
+       Fire truck enters from East at t=900s during heavy traffic.
+  -->
+  <vehicle id="ambulance_1"  type="emergency_veh" route="emrg_N_to_S"
+           depart="180"  departSpeed="max" departLane="0" color="1,0,0"/>
+
+  <vehicle id="firetruck_1"  type="emergency_veh" route="E_to_W"
+           depart="900"  departSpeed="max" departLane="0" color="1,0.4,0"/>
+
+  <vehicle id="ambulance_2"  type="emergency_veh" route="S_to_N"
+           depart="2400" departSpeed="max" departLane="0" color="1,0,0"/>
+
+</routes>
